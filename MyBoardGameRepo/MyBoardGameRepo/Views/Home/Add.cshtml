@@ -1,0 +1,50 @@
+﻿@model BoardGame
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title> Add Game </title>
+</head>
+
+<body>
+    <h2> Add a Game </h2>
+    <form asp-action="Add" method="post">
+        <table>
+            <tr>
+                <th> Name: </th>
+                <td> <input asp-for="Name" /> </td>
+            </tr>
+            <tr>
+                <th> Description: </th>
+                <td> <input asp-for="Description" /> </td>
+            </tr>
+            <tr>
+                <th> Company Name: </th>
+                <td> <input asp-for="CompanyName" /> </td>
+            </tr>
+            <tr>
+                <th> Player Info: </th>
+                <td> <input asp-for="NumberOfPlayers" /> </td>
+            </tr>
+            <tr>
+                <th> Genre: </th>
+                <td> <input asp-for="Genre" /> </td>
+            </tr>
+            <tr>
+                <th> Checked Out: </th>
+                <td> <input asp-for="CheckedOut" /> </td>
+            </tr>
+            <tr>
+                <th>
+                    <a class="btn btn-primary" asp-controller="Home" asp-action="Index">
+                        Back
+                    </a>
+                </th>
+                <td> <input type="submit" value="Add Game" /> </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

@@ -1,0 +1,47 @@
+﻿@model BoardGame
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title> BoardGame </title>
+</head>
+
+<a class="btn-primary btn" asp-controller="Home" asp-action="Index">
+    Back 
+</a>
+<br />
+<body>
+    <div class="text-hide">@Model.BoardGameId </div>
+    <h3> @Model.Name </h3>
+    <p> @Model.Description </p>
+    <h4> @Model.Genre </h4>
+    <h4> Category: @Model.CompanyName </h4>
+    <h4> Player Info: @Model.NumberOfPlayers </h4>
+    @if (Model.CheckedOut == true)
+    {
+        @: <div class="text-danger"> Sorry, this Game is Currently Checked Out. </div>
+        <a class="btn-sm btn-primary"
+           asp-controller="Home" asp-action="CheckIn" asp-route-gameId="@Model.BoardGameId ">
+            Check In Game
+        </a>
+    }
+    else
+    {
+        @: <div class="text-success"> This game is still available! </div>
+        <a class="btn-sm btn-primary"
+           asp-controller="Home" asp-action="CheckOut" asp-route-gameId="@Model.BoardGameId ">
+            Check Out Game
+        </a>
+    }
+    <a class="btn-sm btn-secondary"
+       asp-controller="Home" asp-action="UpdateGame" asp-route-gameId="@Model.BoardGameId ">
+        Edit Game
+    </a>
+    <a class="btn-sm btn-danger"
+       asp-controller="Home" asp-action="Delete" asp-route-gameId="@Model.BoardGameId ">
+        Delete Game
+    </a>
+</body>
+</html>

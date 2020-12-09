@@ -1,0 +1,45 @@
+﻿@model IQueryable<BoardGame>
+
+<div>
+    <h1 class="display-4 text-center"> Welcome To The Ezekiel's Board Game Checkout! </h1>
+</div>
+<br />
+<a class="btn btn-info text-center" asp-controller="Player" asp-action="Index"> Select Player </a>
+<br />
+<br />
+<h3> List of all Board Games: </h3>
+<span>
+    <a class="btn btn-success text-center" asp-controller="Home" asp-action="Add">
+        Add Game
+    </a>
+</span>
+<hr />
+@foreach (BoardGame b in Model)
+{
+    if (b.BoardGameId > 1)
+    {
+        <h4>
+            <a asp-controller="Home" asp-action="Detail" asp-route-gameId="@b.BoardGameId">
+                @b.Name
+            </a>
+        </h4>
+        @:Description: @b.Description
+        <h5>
+            Genre:
+            <a asp-controller="Home" asp-action="Search" asp-route-genre="@b.Genre">
+                @b.Genre
+            </a>
+        </h5>
+        @:Company: @b.CompanyName
+        <br />
+        @if (b.CheckedOut == true)
+        {
+            @: <div class="text-danger"> Sorry, this Game is Currently Checked Out. </div>
+        }
+        else
+        {
+            @: <div class="text-success"> This game is still available! </div>
+        }
+        <hr />
+    }
+}

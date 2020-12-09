@@ -1,0 +1,55 @@
+﻿@model BoardGame
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title> Update Game </title>
+</head>
+<body>
+    <form asp-action="UpdateGame" method="Post">
+        <table>
+            <tr>
+                <td>
+                    <input type="hidden" asp-for="BoardGameId" />
+                </td>
+            </tr>
+            <tr>
+                <th> Name: </th>
+                <td> <input asp-for="Name" /> </td>
+            </tr>
+            <tr>
+                <th> Description: </th>
+                <td> <input asp-for="Description" /> </td>
+            </tr>
+            <tr>
+                <th> Company Name: </th>
+                <td> <input asp-for="CompanyName" /> </td>
+            </tr>
+            <tr>
+                <th> Player Info: </th>
+                <td> <input asp-for="NumberOfPlayers" /> </td>
+            </tr>
+            <tr>
+                <th> Genre: </th>
+                <td> <input asp-for="Genre" /> </td>
+            </tr>
+            <tr>
+                <th> Checked Out: </th>
+                <td> <input asp-for="CheckedOut" /> </td>
+            </tr>
+            <tr>
+                <th>
+                    <a class="btn-primary btn-sm" asp-controller="Home" asp-action="Detail" asp-route-gameId="@Model.BoardGameId">
+                        Back
+                    </a>
+
+                </th>
+                <td> <input type="submit" value="Update" /> </td>
+            </tr>
+        </table>
+    </form>
+
+</body>
+</html>

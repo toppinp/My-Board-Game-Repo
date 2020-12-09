@@ -1,0 +1,38 @@
+﻿@model Player
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title> Add Player </title>
+</head>
+
+<body>
+    <h2> Add Player Information: </h2>
+    <form asp-action="Add" method="post">
+        <table>
+            <tr>
+                <th></th>
+                <td> <input type="hidden" asp-for="PlayerId" /> </td>
+            </tr>
+            <tr>
+                <th> Name: </th>
+                <td> <input asp-for="Name" /> </td>
+            </tr>
+            <tr>
+                <th> Age: </th>
+                <td> <input asp-for="Age" /> </td>
+            </tr>
+            <tr>
+                <th>
+                    <a class="btn-sm btn-primary" asp-controller="Player" asp-action="Index">
+                        Back
+                    </a>
+                </th>
+                <td> <input class="bg-success" type="submit" value="Add Player" /> </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

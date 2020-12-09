@@ -1,0 +1,38 @@
+﻿@model Player
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title> Player Detail </title>
+</head>
+
+<a class="btn-primary btn" asp-controller="Player" asp-action="Index">
+    Back
+</a>
+<br />
+<body>
+    <div class="text-hide">@Model.PlayerId </div>
+    <h3> @Model.Name </h3>
+    <p> Age: @Model.Age </p>
+    @*
+        @if (Model.BoardGameId != 1)
+        {
+            <h4> Currently Playing: @Model.BoardGame.Name </h4>
+            <a class="btn-sm btn-primary"
+               asp-controller="Home" asp-action="CheckInOut" asp-route-gameId="@Model.BoardGameId ">
+                Check In Game
+            </a>
+        }
+    *@
+    <a class="btn-sm btn-secondary"
+       asp-controller="Player" asp-action="UpdatePlayer" asp-route-playerId="@Model.PlayerId ">
+        Update Player
+    </a>
+    <a class="btn-sm btn-danger"
+       asp-controller="Player" asp-action="Delete" asp-route-playerId="@Model.PlayerId ">
+        Delete Player
+    </a>
+</body>
+</html>
