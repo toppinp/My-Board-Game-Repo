@@ -1,14 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using MyBoardGameRepo.Models;
-using MyBoardGameRepo.Models.BoardGames;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using MyBoardGameRepo.Infrastructure;
-using MyBoardGameRepo.Models.Players;
+using MyBoardGameRepo.Models;
+using System.Linq;
 
 namespace MyBoardGameRepo.Controllers
 {
@@ -18,9 +12,10 @@ namespace MyBoardGameRepo.Controllers
 
         private readonly IBoardGameRepository _repository;
 
-        public Player    Player    { get; set; }
+        public  Player    Player    { get; set; }
 
-        public string    ReturnUrl { get; set; }
+        public  string    ReturnUrl { get; set; }
+
 
         // C o n s t r u c t o r s
 
@@ -31,36 +26,6 @@ namespace MyBoardGameRepo.Controllers
 
 
         // M e t h o d s
-
-        public void OnGet(string returnUrl = "/")
-        {
-            ReturnUrl = returnUrl;
-
-            Player = HttpContext.Session.GetJson<Player>("player");
-            if(Player == null)
-            {
-                Player = new Player();
-            }
-        }
-
-        public void OnPost(int boardGameId, string returnUrl = "/")
-        {
-            ReturnUrl = returnUrl;
-            Player = HttpContext.Session.GetJson<Player>("player");
-            if(Player == null)
-            {
-                Player = new Player();
-            }
-
-            BoardGame boardGame = _repository.GetAllBoardGames()
-                .FirstOrDefault(b => b.BoardGameId == boardGameId);
-            if(boardGame != null)
-            {
-                
-            }
-
-            HttpContext.Session.SetJson("player", Player);
-        }
 
         // C r e a t e
 

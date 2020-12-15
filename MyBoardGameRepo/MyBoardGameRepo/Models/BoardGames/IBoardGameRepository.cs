@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MyBoardGameRepo.Models.BoardGames
+namespace MyBoardGameRepo.Models
 {
     public interface IBoardGameRepository
     {
@@ -21,6 +21,13 @@ namespace MyBoardGameRepo.Models.BoardGames
         public BoardGame GetGameById(int gameId);
 
         public IQueryable<BoardGame> GetGamesByGenre(string genre);
+
+        public IQueryable<BoardGame> GetBoardGameByPlayerId(int playerId);
+
+        public string GetBoardGameNameByPlayerId(int playerId);
+
+        public int? GetBoardGameIdByPlayerId(int playerId);
+
 
         // U p d a t e
 

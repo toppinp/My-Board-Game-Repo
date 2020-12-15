@@ -1,47 +1,94 @@
 ﻿@model BoardGame
+@inject IPlayerRepository PlayerRepository
+@inject IBoardGameRepository BoardGameRepository
 
-<!DOCTYPE html>
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <a class="btn-primary btn" asp-controller="Home" asp-action="Index">
+                    Back
+                </a>
+                <br />
+                <div class="text-hide">@Model.BoardGameId </div>
+                <h3> @Model.Name </h3>
+                <p> @Model.Description </p>
+                <h4> @Model.Genre </h4>
+                <h4> Category: @Model.CompanyName </h4>
+                <h4> Player Info: @Model.NumberOfPlayers </h4>
+                @if (PlayerRepository.GetLoggedInPlayerId() != null && Model.AllowedAge < PlayerRepository.GetPlayerBySession().Age)
+                {
+                    <h4> Minimum Age: @Model.AllowedAge  </h4>
+                }
+                else if (PlayerRepository.GetLoggedInPlayerId() != null)
+                {
+                    <h4 class="text-danger"> Minimum Age: @Model.AllowedAge  </h4>
+                    <h4 class="text-danger"> You Are Not Old Enough To Check Out This Game </h4>
+                }
+                else
+                {
+                    <div class="text-danger"> You Must Log In To Check Out A Game </div>
+                }
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title> BoardGame </title>
-</head>
+                @if (Model.CheckedOut == true || BoardGameRepository.GetBoardGameByPlayerId(PlayerRepository.GetPlayerBySession().PlayerId) == null)
+                {
+                    if (Model.CheckedOut == true)
+                    {
+                        @: <div class="text-danger"> Sorry, this Game is Currently Checked Out </div>
+                    }
+                    else if (BoardGameRepository.GetBoardGameByPlayerId(PlayerRepository.GetPlayerBySession().PlayerId) == null)
+                    {
+                        @: <div class="text-danger"> You Must Check In Your Current Game To Check Out Another Game </div>
+                    }
+                    @if (PlayerRepository.IsPlayerLoggedIn() == true)
+                    {
+                        if (Model.PlayerId == PlayerRepository.GetPlayerBySession().PlayerId || PlayerRepository.IsPlayerAdmin() == true)
+                        {
+                            <a class="btn-sm btn-primary" asp-controller="Home" asp-action="CheckIn" asp-route-gameId="@Model.BoardGameId ">
+                                Check In Game
+                            </a>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-danger"> You Must Log In To Check Out A Game </div>
+                    }
+                }
 
-<a class="btn-primary btn" asp-controller="Home" asp-action="Index">
-    Back 
-</a>
-<br />
-<body>
-    <div class="text-hide">@Model.BoardGameId </div>
-    <h3> @Model.Name </h3>
-    <p> @Model.Description </p>
-    <h4> @Model.Genre </h4>
-    <h4> Category: @Model.CompanyName </h4>
-    <h4> Player Info: @Model.NumberOfPlayers </h4>
-    @if (Model.CheckedOut == true)
-    {
-        @: <div class="text-danger"> Sorry, this Game is Currently Checked Out. </div>
-        <a class="btn-sm btn-primary"
-           asp-controller="Home" asp-action="CheckIn" asp-route-gameId="@Model.BoardGameId ">
-            Check In Game
-        </a>
-    }
-    else
-    {
-        @: <div class="text-success"> This game is still available! </div>
-        <a class="btn-sm btn-primary"
-           asp-controller="Home" asp-action="CheckOut" asp-route-gameId="@Model.BoardGameId ">
-            Check Out Game
-        </a>
-    }
-    <a class="btn-sm btn-secondary"
-       asp-controller="Home" asp-action="UpdateGame" asp-route-gameId="@Model.BoardGameId ">
-        Edit Game
-    </a>
-    <a class="btn-sm btn-danger"
-       asp-controller="Home" asp-action="Delete" asp-route-gameId="@Model.BoardGameId ">
-        Delete Game
-    </a>
-</body>
-</html>
+                else
+                {
+                    @: <div class="text-success"> This game is still available! </div>
+                    @if (PlayerRepository.IsPlayerLoggedIn() == true)
+                    {
+                        @if (Model.AllowedAge < PlayerRepository.GetPlayerBySession().Age)
+                        {
+                            <a class="btn-sm btn-primary"
+                               asp-controller="Home" asp-action="CheckOut" asp-route-gameId="@Model.BoardGameId ">
+                                Check Out Game
+                            </a>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-danger"> You Must Log In To Check Out A Game </div>
+                    }
+
+                }
+
+                @if (PlayerRepository.IsPlayerAdmin() == true)
+                {
+                    <a class="btn-sm btn-secondary"
+                       asp-controller="Home" asp-action="UpdateGame" asp-route-gameId="@Model.BoardGameId ">
+                        Edit Game
+                    </a>
+                    <a class="btn-sm btn-danger"
+                       asp-controller="Home" asp-action="Delete" asp-route-gameId="@Model.BoardGameId ">
+                        Delete Game
+                    </a>
+                }
+            </div>
+            <div class="col-6">
+                <img style="height:300px; width:auto;"  src="@Model.Image" />
+            </div>
+        </div>
+    </div>
+

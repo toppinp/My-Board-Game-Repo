@@ -1,4 +1,5 @@
 ﻿@model IQueryable<Player>
+@inject IPlayerRepository PlayerRepository
 
 <div>
     <h1 class="display-4 text-center"> Welcome To The Ezekiel's Board Game Checkout! </h1>
@@ -9,14 +10,15 @@
 <a class="btn-sm btn-primary" asp-controller="Home" asp-action="Index">
     Back
 </a>
-<br />
-<br />
-<h3> List of all Players: </h3>
-<span>
+@if (PlayerRepository.IsPlayerAdmin() == true || PlayerRepository.IsPlayerLoggedIn() == false)
+{
     <a class="btn-sm btn-success text-center" asp-controller="Player" asp-action="Add">
         Add Player
     </a>
-</span>
+}
+<br />
+<br />
+<h3> List of all Players: </h3>
 <hr />
 @foreach (Player p in Model)
 {
@@ -25,8 +27,8 @@
             @p.Name
         </a>
     </h4>
-    <a class="btn-sm btn-success"  asp-controller="Home" asp-action="Index" asp-route-playerId="@p">
-        Select
+    <a class="btn-sm btn-success" asp-controller="Player" asp-action="Login" asp-route-playerId="@p.PlayerId">
+        Log In
     </a>
     <hr />
 }

@@ -1,17 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using MyBoardGameRepo.Models;
-using MyBoardGameRepo.Models.BoardGames;
-using MyBoardGameRepo.Models.Players;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MyBoardGameRepo
 {
@@ -34,19 +30,26 @@ namespace MyBoardGameRepo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(options =>options.UseSqlServer
-                (_configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDbContext<AppDbContext>(options => options.UseSqlServer
+            //    (_configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDbContext<AppDbContext>(options => options.UseSqlServer
+            //    (_configuration.GetConnectionString("AzureConnection")));
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer
+                (System.Environment.GetEnvironmentVariable("EzekielsBoardGameRepoAzureConnection")));
 
             services.AddScoped<IBoardGameRepository, EfBoardGameRepository>();
-            services.AddScoped<IPlayerRepository, EfPlayerRepository>();
+            services.AddScoped<IPlayerRepository,    EfPlayerRepository>();
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddControllersWithViews();
+
             // services.AddMemoryCache();
             services.AddDistributedMemoryCache();
             services.AddSession(
-            //   options =>
-            //   {
-            //      options.IdleTimeout = TimeSpan.FromSeconds(10);
-            //   }
+               options =>
+               {
+                   options.IdleTimeout = TimeSpan.FromMinutes(10);
+               }
             );
 
         }

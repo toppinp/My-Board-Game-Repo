@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyBoardGameRepo.Models.Players;
-using System;
-using System.Collections.Generic;
+using MyBoardGameRepo.Models;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace MyBoardGameRepo.Controllers
 {
@@ -49,6 +46,38 @@ namespace MyBoardGameRepo.Controllers
             return View(allPlayers);
         }
 
+
+        [HttpGet]
+        public IActionResult Login(int playerId)
+        {
+            Player player = _repository.GetPlayerById(playerId);
+            return View(player);
+        }
+
+        [HttpPost]
+        public IActionResult Login(Player player)
+        {
+            bool validPlayer = _repository.Login(player);
+            if(validPlayer == true)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return View(player);
+        }
+
+
+        public IActionResult Logout()
+        {
+            Player player = _repository.GetPlayerBySession();
+            return View(player);
+        }
+
+
+        public IActionResult LogoutConfirm()
+        {
+            _repository.Logout();
+            return RedirectToAction("Index", "Home");
+        }
 
         public IActionResult Detail(int playerId)
         {

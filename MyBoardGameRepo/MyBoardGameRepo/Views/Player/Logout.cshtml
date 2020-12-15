@@ -1,0 +1,15 @@
+﻿@model Player
+
+<a class="btn-primary btn" asp-controller="Home" asp-action="Index">
+    Back
+</a>
+<br />
+<h2 class="text-danger"> Are You Sure That You Want To Log Out?</h2>
+<br />
+<div class="text-hide">@Model.PlayerId </div>
+<h3> @Model.Name </h3>
+<p> Age: @Model.Age </p>
+
+<a class="btn-danger btn" asp-controller="Player" asp-action="LogoutConfirm">
+    Confirm
+</a>

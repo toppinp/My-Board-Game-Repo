@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MyBoardGameRepo.Models.Players
+namespace MyBoardGameRepo.Models
 {
     public interface IPlayerRepository
     {
@@ -21,6 +21,22 @@ namespace MyBoardGameRepo.Models.Players
         public Player GetPlayerById(int playerId);
 
         public IQueryable<Player> GetPlayersByName(string name);
+
+        public Player GetPlayerByName(string name);
+
+        public Player GetPlayerBySession();
+
+        public bool Login(Player player);
+
+        public bool IsPlayerLoggedIn();
+
+        public string GetLoggedInPlayerName();
+
+        public int? GetLoggedInPlayerId();
+
+        public bool IsPlayerAdmin();
+
+        public void Logout();
 
 
         // U p d a t e

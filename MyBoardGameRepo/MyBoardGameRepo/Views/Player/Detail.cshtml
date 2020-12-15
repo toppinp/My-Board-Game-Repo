@@ -1,38 +1,53 @@
 ﻿@model Player
+@inject IPlayerRepository PlayerRepository
+@inject IBoardGameRepository BoardGameRepository
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title> Player Detail </title>
-</head>
-
-<a class="btn-primary btn" asp-controller="Player" asp-action="Index">
-    Back
-</a>
-<br />
-<body>
+@if (PlayerRepository.IsPlayerLoggedIn() == true)
+{
+    <a class="btn-primary btn" asp-controller="Player" asp-action="Index">
+        Back
+    </a>
+    <br />
+    <h2> Player Details</h2>
+    <br />
     <div class="text-hide">@Model.PlayerId </div>
     <h3> @Model.Name </h3>
     <p> Age: @Model.Age </p>
-    @*
-        @if (Model.BoardGameId != 1)
+    <br />
+
+    @if (BoardGameRepository.GetBoardGameByPlayerId(Model.PlayerId) != null)
+    {
+        @if (BoardGameRepository.GetBoardGameIdByPlayerId(Model.PlayerId) > 0)
         {
-            <h4> Currently Playing: @Model.BoardGame.Name </h4>
-            <a class="btn-sm btn-primary"
-               asp-controller="Home" asp-action="CheckInOut" asp-route-gameId="@Model.BoardGameId ">
-                Check In Game
-            </a>
+            @: Currently Playing: @BoardGameRepository.GetBoardGameNameByPlayerId(Model.PlayerId)
+            @if (Model.PlayerId == PlayerRepository.GetLoggedInPlayerId())
+            {
+                <a class="btn-primary btn" asp-controller="Home" asp-action="CheckIn">
+                    Check In
+                </a>
+            }
         }
-    *@
-    <a class="btn-sm btn-secondary"
-       asp-controller="Player" asp-action="UpdatePlayer" asp-route-playerId="@Model.PlayerId ">
-        Update Player
+    }
+    @if (PlayerRepository.GetLoggedInPlayerId() == Model.PlayerId || PlayerRepository.IsPlayerAdmin() == true)
+    {
+        <br />
+        <a class="btn-secondary btn" asp-controller="Player" asp-action="UpdatePlayer" asp-route-playerId="@Model.PlayerId">
+            Update Player
+        </a>
+        <a class="btn-danger btn" asp-controller="Player" asp-action="Delete" asp-route-playerId="@Model.PlayerId">
+            Delete Player
+        </a>
+    }
+}
+else
+{
+    @: <h2 class="text-danger">You Must Be Logged In To View Player Details.</h2>
+    <br />
+    <a class="btn-primary btn" asp-controller="Player" asp-action="Index">
+        Back
     </a>
-    <a class="btn-sm btn-danger"
-       asp-controller="Player" asp-action="Delete" asp-route-playerId="@Model.PlayerId ">
-        Delete Player
-    </a>
-</body>
-</html>
+}
+<br />
+<br />
+
+

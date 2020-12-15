@@ -1,0 +1,25 @@
+﻿@model Player
+
+<h3> Login </h3>
+@if (Model == null)
+{
+    <form method="post">
+        <input asp-for="Name" placeholder="Your Name" title="Name" />
+        <input asp-for="Password" placeholder="Your Password" title="Password" />
+        <button class="btn-success" type="submit"> Login </button>
+    </form>
+    <br />
+    <a class="btn-primary btn" asp-action="Index"> Back </a>
+}
+else
+{
+    <form method="post">
+        <input asp-for="Name" placeholder="@Model.Name" title="Name" />
+        <input asp-for="Password" placeholder="Your Password" title="Password" />
+        <button class="btn-success" type="submit"> Login </button>
+    </form>
+    <br />
+    <a class="btn-primary btn" asp-action="Index"> Back </a>
+}
+<br />
+<br />

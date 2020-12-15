@@ -1,20 +1,66 @@
-﻿
-<!DOCTYPE html>
+﻿@inject IPlayerRepository PlayerRepository
 
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title> Board Game Checkout </title>
+    <title> Board Game Repository </title>
     <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 </head>
 
-<body class="bg-light">
-    <div class="col-1">
+<body class="bg-dark">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        @if (PlayerRepository.IsPlayerLoggedIn() == false)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Player" asp-action="Login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Player" asp-action="Add">Register</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-link">
+                                @PlayerRepository.GetLoggedInPlayerName()
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Player" asp-action="Logout">Logout</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
 
+    <div class="container">
+        <div class="row">
+            <div class="col-10 bg-light">
+                <br />
+                @RenderBody()
+            </div>
+            <div class="col-2">
+                <img style="width: 550px; height:800px;" src="https://s-media-cache-ak0.pinimg.com/564x/5a/eb/18/5aeb18fd8af85af1da96f5454263d9ba.jpg" />
+                <img style="width: 550px; height:800px;" src="https://1.bp.blogspot.com/-HW_gcwqE7aU/TsRcZkA6KaI/AAAAAAAAAys/T0ZLg2fm33k/s1600/game+night.JPG" />
+                <img style="width: 550px; height:800px;" src="https://mylifeandkids.com/wp-content/uploads/2018/01/Game-Night1-800x907.jpg" />
+            </div>
+        </div>
     </div>
-    <div class="col-11">
-        @RenderBody()
-    </div>
+    <br />
+    <br />
+
 </body>
 </html>

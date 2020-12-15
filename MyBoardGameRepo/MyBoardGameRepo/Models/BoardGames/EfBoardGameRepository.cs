@@ -1,23 +1,26 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MyBoardGameRepo.Models.BoardGames
+namespace MyBoardGameRepo.Models
 {
     public class EfBoardGameRepository : IBoardGameRepository
     {
 
         // F i e l d s   &   P r o p e r t i e s
 
-        private AppDbContext _context;
+        private readonly AppDbContext _context;
 
+        private ISession _session;
 
         // C o n s t r u c t o r s
 
-        public EfBoardGameRepository(AppDbContext context)
+        public EfBoardGameRepository(AppDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _session = httpContextAccessor.HttpContext.Session;
         }
 
 
@@ -28,7 +31,6 @@ namespace MyBoardGameRepo.Models.BoardGames
         public BoardGame AddGame(BoardGame boardGame)
         {
             _context.BoardGames.Add(boardGame);
-            boardGame.PlayerId = 1;
             _context.SaveChanges();
             return boardGame;
 
@@ -57,6 +59,34 @@ namespace MyBoardGameRepo.Models.BoardGames
         }
 
 
+        public IQueryable<BoardGame> GetBoardGameByPlayerId(int playerId)
+        {
+            return _context.BoardGames
+                .Where(b => b.PlayerId == playerId);
+        }
+
+
+        public int? GetBoardGameIdByPlayerId(int playerId)
+        {
+            BoardGame boardGame = GetBoardGameByPlayerId(playerId)
+                                                .FirstOrDefault();
+            if(boardGame == null)
+            {
+                return null;
+            }
+
+            return boardGame.BoardGameId;
+        }
+
+
+        public string GetBoardGameNameByPlayerId(int playerId)
+        {
+            BoardGame boardGame = GetBoardGameByPlayerId(playerId)
+                                                .FirstOrDefault();
+            return boardGame.Name;
+        }
+
+
         // U p d a t e
 
         public BoardGame UpdateGame(BoardGame boardGame)
@@ -70,6 +100,7 @@ namespace MyBoardGameRepo.Models.BoardGames
                 boardGameToUpdate.Genre = boardGame.Genre;
                 boardGameToUpdate.Name = boardGame.Name;
                 boardGameToUpdate.NumberOfPlayers = boardGame.NumberOfPlayers;
+                boardGameToUpdate.Image = boardGame.Image;
                 _context.SaveChanges();
             }
             return boardGameToUpdate;
@@ -82,6 +113,7 @@ namespace MyBoardGameRepo.Models.BoardGames
             if (boardGameToUpdate != null)
             {
                 boardGameToUpdate.CheckedOut = boardGame.CheckedOut;
+                boardGameToUpdate.PlayerId = null;
                 _context.SaveChanges();
             }
             return boardGameToUpdate;
@@ -94,6 +126,7 @@ namespace MyBoardGameRepo.Models.BoardGames
             if (boardGameToUpdate != null)
             {
                 boardGameToUpdate.CheckedOut = boardGame.CheckedOut;
+                boardGameToUpdate.PlayerId = _session.GetInt32("playerId");
                 _context.SaveChanges();
             }
             return boardGameToUpdate;

@@ -1,4 +1,4 @@
-﻿using MyBoardGameRepo.Models.Players;
+﻿using MyBoardGameRepo.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MyBoardGameRepo.Models.BoardGames
+namespace MyBoardGameRepo.Models
 {
     [Table("BoardGames")]
     public class BoardGame
@@ -29,8 +29,10 @@ namespace MyBoardGameRepo.Models.BoardGames
         public int       AllowedAge   { get; set; }
 
         [ForeignKey("Players")]
-        public int PlayerId { get; set; }
+        public int?     PlayerId      { get; set; }
 
-        public Player Player { get; set; }
+        public Player   Player        { get; set; }
+
+        public string   Image         { get; set; }
     }
 }

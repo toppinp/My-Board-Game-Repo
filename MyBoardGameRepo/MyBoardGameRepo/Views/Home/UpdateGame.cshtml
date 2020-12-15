@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width" />
     <title> Update Game </title>
 </head>
-<body>
+<body class="align-content-center">
+    <h1> Update Game </h1>
     <form asp-action="UpdateGame" method="Post">
         <table>
             <tr>
@@ -28,12 +29,20 @@
                 <td> <input asp-for="CompanyName" /> </td>
             </tr>
             <tr>
-                <th> Player Info: </th>
+                <th> Player Amount: </th>
                 <td> <input asp-for="NumberOfPlayers" /> </td>
+            </tr>
+            <tr>
+                <th> Minimum Age: </th>
+                <td> <input asp-for="AllowedAge" /> </td>
             </tr>
             <tr>
                 <th> Genre: </th>
                 <td> <input asp-for="Genre" /> </td>
+            </tr>
+            <tr>
+                <th> Image: </th>
+                <td> <input asp-for="Image" /> </td>
             </tr>
             <tr>
                 <th> Checked Out: </th>
